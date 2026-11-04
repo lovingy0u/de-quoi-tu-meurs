@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>De quoi tu meurs ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@600;700&display=swap">
+<style>
+/* Layout: une colonne téléphone d'abord, un formulaire puis un faux certificat de décès rempli à la main. Univers pastel volontairement unique (pas de thème sombre). */
+:root {
+  --bg: #F6F1FB;
+  --paper: #FFFDFE;
+  --ink: #2E2347;
+  --ink-soft: #5B4F73;
+  --pink: #F2A7C3;
+  --pink-soft: #FBE3EE;
+  --lav: #C3B5F0;
+  --lav-soft: #E9E4FB;
+  --blue: #A9D2F2;
+  --rasp: #B23A78;
+  --violet: #5A4BC2;
+  --f-display: 'Fredoka', 'Trebuchet MS', Verdana, sans-serif;
+  --f-body: 'Nunito', Verdana, sans-serif;
+  --f-hand: 'Caveat', 'Brush Script MT', cursive;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+[hidden] { display: none !important; }
+body {
+  background: radial-gradient(120% 60% at 0% 0%, #FDE4EF 0%, transparent 60%), radial-gradient(120% 60% at 100% 100%, #DCEDFB 0%, transparent 60%), var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.5;
+  min-height: 100%;
+}
+.wrap {
+  max-width: 560px;
+  margin: 0 auto;
+  padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+header { display: flex; flex-direction: column; gap: 6px; }
+.eyebrow { font-weight: 800; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--violet); margin: 0; }
+h1 { font-family: var(--f-display); font-weight: 600; font-size: clamp(36px, 10vw, 52px); line-height: 1.02; margin: 0; text-wrap: balance; }
+h1 span { color: var(--rasp); }
+.lede { margin: 0; color: var(--ink-soft); }
+.panel { background: var(--paper); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 10px 30px rgba(90, 75, 194, .10); }
+.row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+.field { display: flex; flex-direction: column; gap: 6px; flex: 1 1 140px; min-width: 0; }
+label, .label { font-weight: 800; font-size: 14px; color: var(--ink-soft); }
+input[type=number] {
+  font: 600 22px var(--f-display); color: var(--ink);
+  border: 2px solid var(--lav); border-radius: 14px; padding: 10px 14px; background: var(--paper); width: 100%;
+}
+input[type=number]:focus-visible, button:focus-visible { outline: 3px solid var(--violet); outline-offset: 2px; }
+.seg { display: flex; background: var(--lav-soft); border-radius: 14px; padding: 4px; gap: 4px; }
+.seg button { flex: 1; border: 0; background: transparent; border-radius: 10px; padding: 10px 8px; font: 700 16px var(--f-body); color: var(--ink-soft); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--paper); color: var(--ink); box-shadow: 0 2px 8px rgba(46, 35, 71, .12); }
+.go {
+  border: 0; cursor: pointer; border-radius: 16px; padding: 14px 18px;
+  font: 600 20px var(--f-display); color: #FFF7FB; background: var(--rasp);
+  box-shadow: 0 6px 0 #7E2553; transition: transform .08s ease, box-shadow .08s ease;
+}
+.go:active { transform: translateY(4px); box-shadow: 0 2px 0 #7E2553; }
+.err { color: var(--rasp); font-weight: 700; margin: 0; }
+
+/* Le certificat */
+.cert { background: var(--paper); border: 2px dashed var(--lav); border-radius: 22px; padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 14px; position: relative; }
+.cert-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.cert-head p { margin: 0; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.stamp { font: 700 13px var(--f-body); color: var(--rasp); border: 2px solid var(--rasp); border-radius: 8px; padding: 2px 8px; transform: rotate(-4deg); letter-spacing: .06em; }
+.part { display: flex; flex-direction: column; gap: 6px; }
+.part-title { margin: 0; font-weight: 800; font-size: 14px; color: var(--violet); }
+.hand { font-family: var(--f-hand); font-weight: 700; color: var(--ink); line-height: 1.05; margin: 0; }
+.hand.big { font-size: clamp(38px, 11vw, 50px); }
+.hand.mid { font-size: 30px; }
+.tag { align-self: flex-start; font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 999px; }
+.tag.init { background: var(--rasp); color: #FFF7FB; }
+.tag.assoc { background: var(--lav); color: var(--ink); }
+.quip { margin: 0; color: var(--ink-soft); font-style: italic; }
+.assoc-list { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.empty { margin: 0; color: var(--ink-soft); }
+.counter { display: flex; align-items: center; gap: 12px; background: var(--pink-soft); border-radius: 16px; padding: 12px 14px; }
+.counter b { font: 700 36px var(--f-display); color: var(--rasp); line-height: 1; }
+.counter p { margin: 0; font-size: 15px; }
+
+/* Top 3 */
+.top h2 { font: 600 20px var(--f-display); margin: 0; }
+.bars { display: flex; flex-direction: column; gap: 8px; }
+.bar { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; }
+.bar span { font-weight: 700; font-size: 15px; min-width: 0; }
+.bar em { font-style: normal; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--violet); }
+.track { grid-column: 1 / -1; height: 12px; background: var(--lav-soft); border-radius: 999px; overflow: hidden; }
+.fill { height: 100%; background: linear-gradient(90deg, var(--lav), var(--pink)); border-radius: 999px; }
+.lesson { background: var(--lav-soft); border-radius: 18px; padding: 14px 16px; margin: 0; font-size: 15px; }
+.lesson strong { color: var(--rasp); }
+footer { font-size: 13px; color: var(--ink-soft); display: flex; flex-direction: column; gap: 6px; }
+footer p { margin: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .cert.fresh { animation: pop .35s ease-out; }
+  @keyframes pop { from { transform: scale(.97) rotate(-1deg); } to { transform: none; } }
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Simulateur 100 % statistique · 0 % prophétie</p>
+    <h1>De quoi tu <span>meurs</span> ?</h1>
+    <p class="lede">Entre ton âge et ton sexe : on tire au sort ton certificat de décès (fictif !), pondéré par les vraies causes de décès en France en 2024.</p>
+  </header>
+
+  <form class="panel" id="form" novalidate>
+    <div class="row">
+      <div class="field">
+        <label for="age">Ton âge</label>
+        <input id="age" type="number" inputmode="numeric" min="0" max="120" value="23">
+      </div>
+      <div class="field">
+        <span class="label" id="sex-label">Ton sexe (état civil)</span>
+        <div class="seg" role="group" aria-labelledby="sex-label">
+          <button type="button" id="sex-f" data-sex="F" aria-pressed="true">Femme</button>
+          <button type="button" id="sex-h" data-sex="H" aria-pressed="false">Homme</button>
+        </div>
+      </div>
+    </div>
+    <button class="go" type="submit" id="go">Tirer mon certificat</button>
+    <p class="err" id="err" hidden>Entre un âge entre 0 et 120 ans.</p>
+  </form>
+
+  <section class="cert" id="cert" aria-live="polite">
+    <div class="cert-head">
+      <p id="who">Exemple · femme, 23 ans</p>
+      <span class="stamp">FICTIF</span>
+    </div>
+    <div class="part">
+      <p class="part-title">Partie I · cause initiale</p>
+      <p class="hand big" id="init">…</p>
+      <span class="tag init">cause initiale</span>
+      <p class="quip" id="quip"></p>
+    </div>
+    <div class="part">
+      <p class="part-title">Partie II · causes associées</p>
+      <ul class="assoc-list" id="assoc"></ul>
+      <p class="empty" id="assoc-empty" hidden></p>
+    </div>
+    <div class="counter">
+      <b id="n">1</b>
+      <p id="n-text">cause sur ton certificat. En France, la moyenne est de <strong>2,4</strong>.</p>
+    </div>
+  </section>
+
+  <section class="panel top">
+    <h2 id="top-title">Les 3 causes initiales les plus probables</h2>
+    <div class="bars" id="bars"></div>
+  </section>
+
+  <p class="lesson">On ne meurt qu’une fois… mais rarement d’une seule cause. Ne compter que la cause initiale, c’est sous-estimer le diabète <strong>d’un facteur 3 à 4</strong>.</p>
+
+  <footer>
+    <p>Jeu pédagogique : un tirage au hasard selon des fréquences de population. Il ne dit rien sur ta santé.</p>
+    <p>Données : Inserm-CépiDc, causes de décès 2024 (Fouillet et al., BEH n° 15, juin 2026). Trois classes d’âge (0-64, 65-84, 85 ans et +) ; l’effet du sexe est appliqué par cause, en supposant l’âge et le sexe indépendants. Causes associées : fréquences de la partie II par âge. Suicides et homicides exclus du tirage.</p>
+    <p>Présentation de l’article « On ne meurt qu’une fois… mais de combien de causes ? », Population &amp; Sociétés n° 534, Ined, 2016.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  // Causes initiales 2024 : effectifs par classe d'âge [0-64, 65-84, 85+], et par sexe (F, H), tableau du BEH 2026.
+  var CAUSES = [
+    { id: 'cancer', label: 'Cancer', n: [34269, 93638, 45595], F: 77315, H: 96187, quip: 'La première cause de décès en France, chez les femmes comme chez les hommes.' },
+    { id: 'cardio', label: 'Maladie cardiovasculaire', n: [11651, 45757, 78673], F: 71621, H: 64460, quip: 'Ton cœur a rendu son tablier. N° 1 après 85 ans.' },
+    { id: 'maldef', label: 'Cause mal définie', n: [9781, 19852, 37874], F: 37667, H: 29840, quip: 'Même ton médecin ne sait pas. Un décès sur dix finit ici.' },
+    { id: 'resp', label: 'Maladie respiratoire', n: [3643, 19204, 29820], F: 26762, H: 25905, quip: 'Grippe ou pneumonie a eu le dernier mot.' },
+    { id: 'nerv', label: 'Alzheimer, Parkinson & cie', n: [3337, 15111, 18512], F: 21088, H: 15872, quip: 'Le système nerveux a lâché l’affaire.' },
+    { id: 'ment', label: 'Démence', n: [3036, 6600, 15373], F: 15178, H: 9831, quip: 'Classée dans les troubles mentaux, surtout aux grands âges.' },
+    { id: 'endo', label: 'Diabète & co.', n: [2380, 9350, 14041], F: 13990, H: 11781, quip: 'Rare en cause initiale… mais une star de la partie II.' },
+    { id: 'dig', label: 'Maladie digestive', n: [4979, 11447, 10943], F: 12691, H: 14678, quip: 'Ton foie (ou ton intestin) a posé sa démission.' },
+    { id: 'rein', label: 'Maladie des reins', n: [577, 4612, 9042], F: 7236, H: 6995, quip: 'Tes reins ont posé leur préavis.' },
+    { id: 'inf', label: 'Infection (septicémie…)', n: [1319, 4999, 7163], F: 6895, H: 6586, quip: 'Une bactérie très, très motivée.' },
+    { id: 'covid', label: 'Covid-19', n: [267, 2767, 5515], F: 4121, H: 4428, quip: 'Toujours là en 2024, mais en net recul.' },
+    { id: 'acc', label: 'Accident', n: [5323, 8750, 16234], F: 14941, H: 15366, quip: 'Route, chute, escabeau traître : la vie courante.' }
+  ];
+  // Causes associées (partie II) : % des certificats ayant au moins une cause associée, par classe d'âge (BEH 2026, figure 4).
+  var ASSOC = [
+    [['Tumeur', 12.4, 'cancer'], ['Abus d’alcool', 10.8], ['Tabac', 9.8], ['Hypertension', 9.7], ['Diabète', 9.3, 'endo'], ['Antécédents (greffe, implant…)', 9.2], ['Maladie du système nerveux', 8.1, 'nerv']],
+    [['Hypertension', 17.2], ['Diabète', 15.6, 'endo'], ['Tumeur', 15.6, 'cancer'], ['Autre maladie endocrinienne', 10.8, 'endo'], ['Antécédents (greffe, implant…)', 10.1], ['Troubles du rythme cardiaque', 9.5, 'cardio'], ['Maladie des reins', 9.4, 'rein']],
+    [['Hypertension', 20.4], ['Troubles du rythme cardiaque', 16.1, 'cardio'], ['Sénilité, fatigue, cachexie', 11.8], ['Autre maladie endocrinienne', 11.6, 'endo'], ['Troubles cognitifs', 11.5], ['Diabète', 11.0, 'endo'], ['Maladie des reins', 10.9, 'rein'], ['Tumeur', 9.7, 'cancer'], ['Antécédents (greffe, implant…)', 8.6]]
+  ];
+  var P_ASSOC = [0.221, 0.316, 0.349]; // part des certificats avec au moins une cause associée
+  var N_ASSOC = [[1, 35], [2, 30], [3, 20], [4, 15]]; // nombre de causes associées (moyenne ≈ 2,2)
+  var CLASSES = ['0-64 ans', '65-84 ans', '85 ans et +'];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var sex = 'F';
+
+  function ageClass(a) { return a < 65 ? 0 : (a < 85 ? 1 : 2); }
+  function weights(k, s) {
+    return CAUSES.map(function (c) { return c.n[k] * c[s] / (c.F + c.H); });
+  }
+  function pick(items, w) {
+    var t = 0, i; for (i = 0; i < w.length; i++) t += w[i];
+    var r = Math.random() * t;
+    for (i = 0; i < w.length; i++) { r -= w[i]; if (r <= 0) return i; }
+    return w.length - 1;
+  }
+  function fmtPct(x) { return (Math.round(x * 10) / 10).toString().replace('.', ',') + ' %'; }
+
+  function draw(age, s, isExample) {
+    var k = ageClass(age);
+    var w = weights(k, s);
+    var total = w.reduce(function (a, b) { return a + b; }, 0);
+    var c = CAUSES[pick(CAUSES, w)];
+
+    // Partie II
+    var assoc = [];
+    if (Math.random() < P_ASSOC[k]) {
+      var how = N_ASSOC[pick(N_ASSOC, N_ASSOC.map(function (x) { return x[1]; }))][0];
+      var pool = ASSOC[k].filter(function (a) { return a[2] !== c.id; });
+      while (assoc.length < how && pool.length) {
+        var j = pick(pool, pool.map(function (a) { return a[1]; }));
+        assoc.push(pool[j][0]); pool.splice(j, 1);
+      }
+    }
+
+    $('who').textContent = (isExample ? 'Exemple · ' : 'Certificat · ') + (s === 'F' ? 'femme' : 'homme') + ', ' + age + ' an' + (age > 1 ? 's' : '');
+    $('init').textContent = c.label;
+    $('quip').textContent = c.quip;
+    var ul = $('assoc'); ul.textContent = '';
+    assoc.forEach(function (a) { var li = document.createElement('li'); li.className = 'hand mid'; li.textContent = a; ul.appendChild(li); });
+    var empty = $('assoc-empty');
+    if (assoc.length) {
+      empty.hidden = true;
+      var tag = document.createElement('li'); tag.innerHTML = '<span class="tag assoc">causes associées</span>'; ul.appendChild(tag);
+    } else {
+      empty.hidden = false;
+      empty.textContent = 'Rien. Le médecin n’a rien noté ici, comme sur environ ' + (k === 0 ? '4 certificats sur 5' : '2 certificats sur 3') + ' à ton âge.';
+    }
+    var n = 1 + assoc.length;
+    $('n').textContent = n;
+    $('n-text').innerHTML = (n > 1 ? 'causes' : 'cause') + ' sur ton certificat. En France, la moyenne est de <strong>2,4</strong>.';
+
+    // Top 3
+    var order = w.map(function (v, i) { return [v, i]; }).sort(function (a, b) { return b[0] - a[0]; }).slice(0, 3);
+    $('top-title').textContent = 'Les 3 causes les plus probables · ' + (s === 'F' ? 'femmes' : 'hommes') + ', ' + CLASSES[k];
+    var bars = $('bars'); bars.textContent = '';
+    var max = order[0][0];
+    order.forEach(function (o) {
+      var d = document.createElement('div'); d.className = 'bar';
+      var sp = document.createElement('span'); sp.textContent = CAUSES[o[1]].label;
+      var em = document.createElement('em'); em.textContent = fmtPct(100 * o[0] / total);
+      var tr = document.createElement('div'); tr.className = 'track';
+      var f = document.createElement('div'); f.className = 'fill'; f.style.width = (100 * o[0] / max) + '%';
+      tr.appendChild(f); d.appendChild(sp); d.appendChild(em); d.appendChild(tr); bars.appendChild(d);
+    });
+
+    var cert = $('cert'); cert.classList.remove('fresh'); void cert.offsetWidth; cert.classList.add('fresh');
+  }
+
+  document.querySelectorAll('.seg button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      sex = b.getAttribute('data-sex');
+      document.querySelectorAll('.seg button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    });
+  });
+  $('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var a = parseInt($('age').value, 10);
+    if (isNaN(a) || a < 0 || a > 120) { $('err').hidden = false; return; }
+    $('err').hidden = true;
+    draw(a, sex, false);
+    $('cert').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  draw(23, 'F', true);
+})();
+</script>
+
+</body>
+</html>
